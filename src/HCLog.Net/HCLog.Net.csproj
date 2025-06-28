@@ -5,16 +5,16 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
 
-    <!-- NuGet package metadata -->
+    <!-- NuGet metadata -->
     <PackageId>HCLog.Net</PackageId>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Ameer Deen</Authors>
     <Company>Katasec</Company>
     <Description>HashiCorp-compatible hclog logger for .NET, designed for go-plugin-based systems like DStream.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/katasec/HCLog.Net</RepositoryUrl>
     <PackageTags>hashicorp;go-plugin;dstream;hclog;logger</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>../../README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Include README in package -->
-    <None Include="README.md" Pack="true" PackagePath="" />
+    <!-- Include root-level README in NuGet package -->
+    <None Include="../../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
