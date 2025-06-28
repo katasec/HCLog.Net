@@ -1,4 +1,4 @@
-# PowerShell script to build, pack, and push HCLog.Net to NuGet
+# PowerShell script to pack and publish HCLog.Net to NuGet
 
 $ErrorActionPreference = "Stop"
 
@@ -6,29 +6,29 @@ $ErrorActionPreference = "Stop"
 $projectPath = "src/HCLog.Net/HCLog.Net.csproj"
 $outputDir = "artifacts"
 $nugetSource = "https://api.nuget.org/v3/index.json"
+$readmePath = "README.md"
 
-# --- Step 1: Get latest Git tag ---
+# --- Step 1: Get latest Git tag and parse version ---
 $tag = git describe --tags --abbrev=0
 if ($tag -match "^v(\d+\.\d+\.\d+)$") {
     $version = $Matches[1]
 } else {
-    Write-Error "❌ Latest Git tag '$tag' is not in SemVer format (vX.Y.Z)"
+    Write-Error "❌ Git tag '$tag' is not in SemVer format (vX.Y.Z)"
+    exit 1
+}
+Write-Host "🔖 Using version: $version"
+
+# --- Step 2: Verify README exists ---
+if (-not (Test-Path $readmePath)) {
+    Write-Error "❌ README.md file not found at root. Required for NuGet packaging."
     exit 1
 }
 
-Write-Host "🔖 Using version: $version"
-
-# --- Step 2: Update .csproj <Version> ---
-$csprojContent = Get-Content $projectPath
-$csprojContent = $csprojContent -replace '<Version>.*?</Version>', "<Version>$version</Version>"
-Set-Content $projectPath $csprojContent
-Write-Host "✏️  Updated .csproj with version $version"
-
-# --- Step 3: Clean output ---
-if (Test-Path $outputDir) { Remove-Item $outputDir -Recurse -Force }
+# --- Step 3: Clean previous artifacts ---
+if (Test-Path $outputDir) { Remove-Item -Recurse -Force $outputDir }
 New-Item -ItemType Directory -Path $outputDir | Out-Null
 
-# --- Step 4: Build & pack ---
+# --- Step 4: Build and Pack ---
 dotnet clean $projectPath
 dotnet build $projectPath -c Release
 
@@ -37,15 +37,15 @@ dotnet pack $projectPath `
     -o $outputDir `
     -p:PackageVersion=$version `
     -p:IncludeSymbols=true `
-    -p:SymbolPackageFormat=snupkg
+    -p:SymbolPackageFormat=snupkg `
+    -p:PackageReadmeFile=../../README.md
 
-# --- Step 5: Find the .nupkg ---
+# --- Step 5: Locate package ---
 $nupkg = Get-ChildItem "$outputDir\*.nupkg" | Where-Object { $_.Name -notlike "*.symbols.nupkg" } | Select-Object -First 1
 if (-not $nupkg) {
     Write-Error "❌ No .nupkg file found in $outputDir"
     exit 1
 }
-
 Write-Host "📦 Found package: $($nupkg.FullName)"
 
 # --- Step 6: Push to NuGet ---

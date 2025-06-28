@@ -7,7 +7,7 @@
 
     <!-- NuGet metadata -->
     <PackageId>HCLog.Net</PackageId>
-    <Version>0.0.2</Version>
+    <Version>0.0.0-dev</Version>
     <Authors>Ameer Deen</Authors>
     <Company>Katasec</Company>
     <Description>HashiCorp-compatible hclog logger for .NET, designed for go-plugin-based systems like DStream.</Description>
