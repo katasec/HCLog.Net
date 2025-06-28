@@ -38,7 +38,7 @@ dotnet pack $projectPath `
     -p:PackageVersion=$version `
     -p:IncludeSymbols=true `
     -p:SymbolPackageFormat=snupkg `
-    -p:PackageReadmeFile=../../README.md
+    -p:PackageReadmeFile=README.md
 
 # --- Step 5: Locate package ---
 $nupkg = Get-ChildItem "$outputDir\*.nupkg" | Where-Object { $_.Name -notlike "*.symbols.nupkg" } | Select-Object -First 1

@@ -7,14 +7,14 @@
 
     <!-- NuGet metadata -->
     <PackageId>HCLog.Net</PackageId>
-    <Version>0.0.0-dev</Version>
+    <Version>0.0.0-dev</Version> <!-- Will be overridden by publish.ps1 -->
     <Authors>Ameer Deen</Authors>
     <Company>Katasec</Company>
     <Description>HashiCorp-compatible hclog logger for .NET, designed for go-plugin-based systems like DStream.</Description>
     <RepositoryUrl>https://github.com/katasec/HCLog.Net</RepositoryUrl>
     <PackageTags>hashicorp;go-plugin;dstream;hclog;logger</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReadmeFile>../../README.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <!-- Include root-level README in NuGet package -->
-    <None Include="../../README.md" Pack="true" PackagePath="" />
+    <None Include="$(MSBuildProjectDirectory)\..\..\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
