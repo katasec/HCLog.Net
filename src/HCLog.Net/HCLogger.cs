@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace DStreamDotnetTest
+namespace HCLog.Net
 {
     /// <summary>
     /// HashiCorp compatible logger implementation that exactly matches the format expected by go-plugin
